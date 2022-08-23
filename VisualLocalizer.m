@@ -1,17 +1,17 @@
-%%%%%VWFA EXPERIMENT: localizer %%%%%%%
+%%%%%LIPSPEECH EXPERIMENT: localizer %%%%%%%
 %%script from Stefania Mattioni - adapted by Alice Van Audenhaege
 % Jan2022
 
 %%RUN DESCRIPTION
 % Categories of stimuli = 3 (words, houses and faces); 24 exemplars per category.
 % Tot num stimuli = 72; 
-% There are 24 blocks : 8 for each condition. 
+% There are 30 blocks : 10 for each condition. 
 % This localizer should be ran only once (1 run). 
 
 
 %%BLOCK DESCRIPTION
 % In each block all the 12 stimuli from a category are presented in random
-% order. 750 msec fOr each image + 250 msec ISI (=central fixation cross).
+% order. 750 msec for each image + 250 msec ISI (=central fixation cross).
 % In each block there are either 0, 1 or 2 (this is randomly decided) target
 % stimuli: a target is the repetition of the previous stimulus (N-back task). The
 % participant has to press when he/she sees a target.
@@ -24,15 +24,15 @@
 % block duration = 1 category in each block + 0/1/2 targets = 12/13/14s
 
 % 1 pause of 8 s at the beginning of the run
-% 24 pauses of 6s = 144s
-% 24 blocks per run : minimum 288s / maximum 336s (according to 0, 1 or 2
+% 30 pauses of 6s = 180s
+% 30 blocks per run : minimum 360s / maximum 420s (according to 0, 1 or 2
 % targets)
 
-% MINIMUM DURATION = 440s (7min20sec) / MAXIMUM DURATION = 488s (8min08sec)
+% MINIMUM DURATION = 548s (9min08sec) / MAXIMUM DURATION = 608s (10min08sec)
 % Fixation cross to fill the time difference to get to 488s anyway. 
 
 
-%TWO VARIANT OF THE LOCALIZER (to choose in the Global variable setting, alternate between subjects) :
+%TWO SET OF STIMULI (order of pres. counterbalanced accross partic.) :
 %Set A
 %Set B
 
@@ -41,7 +41,7 @@
 %The only variable you need to manually change is Cfg.device at the
 %beginning of the script. Put either 'PC' or 'Scanner'.
 %Once you will Run the script you will be asked to select some variables:
-%1. Group (TO DEFINE): %%for the moment only controls so CON is defined as
+%1. Group (TO DEFINE): %%for the moment only controls so ctrl is defined as
 %default
 %2. SubID : first 2 letters of Name + first 2 letters of Surname (e.g. Stefania Mattioni == StMa).
 %3. Run Number : 1st or 2nd run
@@ -54,6 +54,8 @@ clear all;
 clc;
 Screen('Preference', 'SkipSyncTests', 1);
 
+expName = 'VisLoc';
+
 %% Device
 %Cfg.device = 'PC'; %(Change manually: 'PC' or 'mri')
 cfg.testingDevice = 'mri';
@@ -63,7 +65,7 @@ fprintf('Connected Device is %s \n\n',cfg.testingDevice);
 %% SET THE MAIN VARIABLES
 global  GlobalGroupID GlobalSubjectID GlobalRunNumberID GlobalStimuliID GlobalStartID
 
-GlobalGroupID = 'CON'; %input ('Group (HNS-HES-HLS-DES):','s'); %%HNS: Hearing non signers; HES:Hearing early signers; HLS:Hearing late signers; DES:Deaf early signers
+GlobalGroupID = 'ctrl'; %input ('Group (HNS-HES-HLS-DES):','s'); 
 GlobalSubjectID=input('Subject ID (sub-XX): ', 's'); %% (BIDS format for subj name = sub-XX)
 GlobalRunNumberID=input('Run Number(1 - 2): ', 's');
 GlobalStartID = input('Start with stimuli set A/B:', 's'); %specify if the
@@ -91,7 +93,7 @@ output_directory='output_files';
        mkdir(output_directory)
     end
 
-output_file_name=[output_directory '/output_file_' GlobalGroupID '_' GlobalSubjectID '_ses-01_task-VisLoc_run-0' GlobalRunNumberID '_events.tsv']; 
+output_file_name=[output_directory '/output_file_' GlobalGroupID '_' GlobalSubjectID '_ses-01_task-' expName '_run-0' GlobalRunNumberID '_events.tsv']; 
 
 logfile = fopen(output_file_name,'a');%'a'== PERMISSION: open or create file for writing; append data to end of file
 fprintf(logfile, 'onset\tduration\ttrial_type\tstim_name\tloop_duration\tresponse_key\ttarget\ttrial_num\tblock_num\trun_num\tsubjID\tgroupID\n');
@@ -112,15 +114,15 @@ All_catB={'WB','HB','FB'};
 
 %Set the block order for the whole run
 if strcmp(GlobalStartID,'A')
-    All_cat_rep=[Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB)];
+    All_cat_rep=[Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB)];
 elseif strcmp(GlobalStartID,'B')
-    All_cat_rep=[Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA)];
+    All_cat_rep=[Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA)];
 % else  %if the input is empty take automatically set 1
 %     GlobalStartID='A';
 %     All_cat_rep=[Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA)];
 end
 
-N_block=[1:length(All_cat_rep)]; 
+N_block=(1:length(All_cat_rep)); 
 
 
 Block_order=All_cat_rep;
@@ -129,7 +131,7 @@ nStim=length(CAT_WA); %this is the number of stimuli of each category
 
 TAR=0; %%will be used to print target/non target stimuli
 responseKey = 'n/a'; %will be used to print response when key press
-run_duration = 488;
+run_duration = 608;
 
 %OPEN THE SCREEN
 [wPtr, rect]= Screen(('OpenWindow'),max(Screen('Screens'))); %open the screen
@@ -138,11 +140,11 @@ Screen ('Flip',wPtr); %flip the buffer, showing the rectangle
 HideCursor(wPtr);
 
 % STIMULI SETTING
-stimSize=400;
-stimTime=0.75;
-timeout=0.22; %Inter Stimulus Interval
-trial_duration=0.97;
-ISI_time=0;
+stimSize=700; 
+stim_duration=0.748; % + 1-2 ms of delay = 750ms
+ISI_duration=0.25; %Inter Stimulus Interval
+trial_duration=1;
+ISI_time=0;%set to 0 before being reassigned
 
 
 % STIMULUS RECTANGLE (in the center)
@@ -177,7 +179,7 @@ try  % safety loop: close the screen if code crashes
     %% TRIGGER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Screen('TextSize', wPtr, 50);%text size
-    DrawFormattedText(wPtr, '\n READY TO START \n \n - Détectez les images répétées - ', ['center'],['center'],[0 0 0]);
+    DrawFormattedText(wPtr, '\n READY TO START \n \n - Détectez les images répétées - ', 'center','center',[0 0 0]);
     Screen('Flip', wPtr);
     
     waitForTrigger(cfg); %this calls the function from CPP github
@@ -235,11 +237,11 @@ try  % safety loop: close the screen if code crashes
             
                 Screen('DrawTexture', wPtr, imageDisplay, [], stimulusRect);
                 % FLIP SCREEN TO SHOW THE STIMULUS(after the cue has been on screen for the ISI)
-                time_stim=Screen('Flip', wPtr);
+                stim_time=Screen('Flip', wPtr);
 
 
-%               %check the response during the stimulis presentation   
-                while (GetSecs-(time_stim))<= stimTime
+%               %check the response during the stimulus presentation+ISI
+                while (GetSecs-(stim_time))<= stim_duration
                     % register the keypress
                     [keyIsDown, secs, keyCode] = KbCheck(-1);
                     if keyIsDown && min(~strcmp(KbName(keyCode),cfg.mri.triggerKey))
@@ -250,8 +252,8 @@ try  % safety loop: close the screen if code crashes
                 % Draw THE FIX CROSS
 %                    Screen('DrawLines',wPtr,crossLines,crossWidth,crossColor,[screenCenterX,screenCenterY]);
 %               % Flip the screen
-                  ISI_time= Screen('Flip', wPtr,time_stim+stimTime);
-                while (GetSecs-(ISI_time)) <= (timeout)
+                  ISI_time= Screen('Flip', wPtr,stim_time+stim_duration);
+                while (GetSecs-(ISI_time)) <= (ISI_duration)
                     % register the keypress
                     [keyIsDown, secs, keyCode] = KbCheck(-1);
                     if keyIsDown && min(~strcmp(KbName(keyCode),cfg.mri.triggerKey))
@@ -259,9 +261,11 @@ try  % safety loop: close the screen if code crashes
                     end
                 end
                 
-            loop_end=GetSecs();
-           
-            fprintf(logfile, '%.2f\t%.2f\t%s\t%s\t%.2f\t%s\t%d\t%d\t%d\t%s\t%s\t%s\n', time_stim-LoopStart,stimTime,Stimuli{n}(1),Stimuli{n},loop_end-Stim_start,responseKey,TAR,n,b,GlobalRunNumberID,GlobalSubjectID,GlobalGroupID);
+            stim_end=GetSecs();
+            
+%             disp(strcat('Stimulus duration:',num2str(ISI_time-stim_time))); %fb in command windiw for timing
+%             disp(strcat('ISI duration :', num2str(stim_end-ISI_time))); %fb in command windiw for timing
+            fprintf(logfile, '%.2f\t%.2f\t%s\t%s\t%.2f\t%s\t%d\t%d\t%d\t%s\t%s\t%s\n', stim_time-LoopStart,ISI_time-stim_time,Stimuli{n}(1),Stimuli{n},stim_end-Stim_start,responseKey,TAR,n,b,GlobalRunNumberID,GlobalSubjectID,GlobalGroupID);
 
 
             TAR=0;%reset the Target hunter as 0 (==no target stimulus)
@@ -269,8 +273,8 @@ try  % safety loop: close the screen if code crashes
             
             Name(b,n)=Stimuli(n);
             Resp(b,n) = {responseKey};
-            Onset(b,n)= time_stim-LoopStart;
-            Duration(b,n)= stimTime;
+            Onset(b,n)= stim_time-LoopStart;
+            Duration(b,n)= ISI_time-stim_time;
             
             %% if this is a target repeat the same stimulus
             
@@ -282,14 +286,14 @@ try  % safety loop: close the screen if code crashes
 
                     Screen('DrawTexture', wPtr, imageDisplay, [], stimulusRect);
                     % FLIP SCREEN TO SHOW THE STIMULUS(after the cue has been on screen for the ISI)
-                    time_stim=Screen('Flip', wPtr);
+                    stim_time=Screen('Flip', wPtr);
 
                     %Draw THE FIX CROSS
 %                     Screen('DrawLines',wPtr,crossLines,crossWidth,crossColor,[screenCenterX,screenCenterY]);
 %                     % Flip the screen
-                     ISI_time= Screen('Flip', wPtr,time_stim+stimTime);
+                     ISI_time= Screen('Flip', wPtr,stim_time+stim_duration);
                     
-                    while (GetSecs-(time_stim+stimTime))<=(timeout)
+                    while (GetSecs-(stim_time+stim_duration))<=(ISI_duration)
                         
                         [keyIsDown, secs, keyCode] = KbCheck(-1);
                         if keyIsDown && min(~strcmp(KbName(keyCode),cfg.mri.triggerKey))
@@ -300,9 +304,9 @@ try  % safety loop: close the screen if code crashes
 
                 
 
-                loop_end=GetSecs();
+                stim_end=GetSecs();
                 
-                fprintf(logfile, '%.2f\t%.2f\t%s\t%s\t%.2f\t%s\t%d\t%d\t%d\t%s\t%s\t%s\n', time_stim-LoopStart,stimTime,'target',Stimuli{n},loop_end-Stim_start,responseKey,TAR,n,b,GlobalRunNumberID,GlobalSubjectID,GlobalGroupID);
+                fprintf(logfile, '%.2f\t%.2f\t%s\t%s\t%.2f\t%s\t%d\t%d\t%d\t%s\t%s\t%s\n', stim_time-LoopStart,ISI_time-stim_time,'target',Stimuli{n},stim_end-Stim_start,responseKey,TAR,n,b,GlobalRunNumberID,GlobalSubjectID,GlobalGroupID);
 
                 
 
@@ -311,14 +315,14 @@ try  % safety loop: close the screen if code crashes
                 
                 Name_target(b,n)=Stimuli(n);
                 Resp_target(b,n) = {responseKey};
-                Onset_target(b,n)= time_stim-LoopStart;
-                Duration_target(b,n)= stimTime;
+                Onset_target(b,n)= stim_time-LoopStart;
+                Duration_target(b,n)= stim_duration;
             end %if this is a target
             
         end % for n stimuli
         block_end=GetSecs();
         block_duration=block_end-block_start;
-        disp (strcat('Block duration:',num2str(block_duration)));
+        disp(strcat('Block duration:',num2str(block_duration)));
         
                             %Draw THE FIX CROSS
                     Screen('DrawLines',wPtr,crossLines,crossWidth,crossColor,[screenCenterX,screenCenterY]);
