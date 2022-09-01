@@ -40,7 +40,8 @@ if ~exist(output_directory, 'dir')
     mkdir(output_directory);
 end
 
-output_file_name = [output_directory '/output_file_' GlobalGroupID '_' GlobalSubjectID '_ses-01_task-' expName '_run-0' GlobalRunNumberID '_events.tsv'];
+output_file_name = [output_directory '/output_file_' GlobalGroupID '_' GlobalSubjectID, ...
+                    '_ses-01_task-' expName '_run-0' GlobalRunNumberID '_events.tsv'];
 
 logfile = fopen(output_file_name, 'a'); % 'a'== PERMISSION: open or create file for writing; append data to end of file
 fprintf(logfile, 'onset\tduration\ttrial_type\tstim_name\tloop_duration\tresponse_key\ttarget\ttrial_num\tblock_num\trun_num\tsubjID\tgroupID\n');
@@ -59,12 +60,13 @@ All_catB = {'WB', 'HB', 'FB'};
 
 % Set the block order for the whole run
 if strcmp(GlobalStartID, 'A')
-    All_cat_rep = [Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB)];
+    All_cat_rep = [Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB), ...
+                   Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB), ...
+                   Shuffle(All_catA) Shuffle(All_catB)];
 elseif strcmp(GlobalStartID, 'B')
-    All_cat_rep = [Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA)];
-    % else  %if the input is empty take automatically set 1
-    %     GlobalStartID='A';
-    %     All_cat_rep=[Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA)];
+    All_cat_rep = [Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA), ...
+                   Shuffle(All_catB) Shuffle(All_catA) Shuffle(All_catB) Shuffle(All_catA), ...
+                   Shuffle(All_catB) Shuffle(All_catA)];
 end
 
 N_block = (1:length(All_cat_rep));
@@ -94,7 +96,10 @@ screenWidth = rect(3);
 screenHeight = rect(4); % -(rect(4)/3); %this part is to have it on the top of te screen
 screenCenterX = screenWidth / 2;
 screenCenterY = screenHeight / 2;
-stimulusRect = [screenCenterX - stimSize / 2 screenCenterY - stimSize / 2 screenCenterX + stimSize / 2 screenCenterY + stimSize / 2];
+stimulusRect = [screenCenterX - stimSize / 2, ...
+                screenCenterY - stimSize / 2, ...
+                screenCenterX + stimSize / 2, ...
+                screenCenterY + stimSize / 2];
 
 % STIMULI FOLDER
 stimFolder = 'Stimuli';
@@ -119,7 +124,8 @@ try  % safety loop: close the screen if code crashes
     %% TRIGGER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Screen('TextSize', wPtr, 50); % text size
-    DrawFormattedText(wPtr, '\n READY TO START \n \n - D�tectez les images r�p�t�es - ', 'center', 'center', [0 0 0]);
+    DrawFormattedText(wPtr, '\n READY TO START \n \n - Détectez les images répétées - ', ...
+                      'center', 'center', [0 0 0]);
     Screen('Flip', wPtr);
 
     waitForTrigger(cfg); % this calls the function from CPP github
@@ -185,8 +191,6 @@ try  % safety loop: close the screen if code crashes
             end
 
             % Draw THE FIX CROSS
-            %                    Screen('DrawLines',wPtr,crossLines,crossWidth,crossColor,[screenCenterX,screenCenterY]);
-            %               % Flip the screen
             ISI_time = Screen('Flip', wPtr, stim_time + stim_duration);
             while (GetSecs - (ISI_time)) <= (ISI_duration)
                 % register the keypress
@@ -198,9 +202,9 @@ try  % safety loop: close the screen if code crashes
 
             stim_end = GetSecs();
 
-            %             disp(strcat('Stimulus duration:',num2str(ISI_time-stim_time))); %fb in command windiw for timing
-            %             disp(strcat('ISI duration :', num2str(stim_end-ISI_time))); %fb in command windiw for timing
-            fprintf(logfile, '%.2f\t%.2f\t%s\t%s\t%.2f\t%s\t%d\t%d\t%d\t%s\t%s\t%s\n', stim_time - LoopStart, ISI_time - stim_time, Stimuli{n}(1), Stimuli{n}, stim_end - Stim_start, responseKey, TAR, n, b, GlobalRunNumberID, GlobalSubjectID, GlobalGroupID);
+            fprintf(logfile, '%.2f\t%.2f\t%s\t%s\t%.2f\t%s\t%d\t%d\t%d\t%s\t%s\t%s\n', ...
+                    stim_time - LoopStart, ISI_time - stim_time, Stimuli{n}(1), Stimuli{n}, ...
+                    stim_end - Stim_start, responseKey, TAR, n, b, GlobalRunNumberID, GlobalSubjectID, GlobalGroupID);
 
             TAR = 0; % reset the Target hunter as 0 (==no target stimulus)
             responseKey = 'n/a'; % reset the response print to null
@@ -222,7 +226,6 @@ try  % safety loop: close the screen if code crashes
                 stim_time = Screen('Flip', wPtr);
 
                 % Draw THE FIX CROSS
-                %                     Screen('DrawLines',wPtr,crossLines,crossWidth,crossColor,[screenCenterX,screenCenterY]);
                 %                     % Flip the screen
                 ISI_time = Screen('Flip', wPtr, stim_time + stim_duration);
 
@@ -237,7 +240,9 @@ try  % safety loop: close the screen if code crashes
 
                 stim_end = GetSecs();
 
-                fprintf(logfile, '%.2f\t%.2f\t%s\t%s\t%.2f\t%s\t%d\t%d\t%d\t%s\t%s\t%s\n', stim_time - LoopStart, ISI_time - stim_time, 'target', Stimuli{n}, stim_end - Stim_start, responseKey, TAR, n, b, GlobalRunNumberID, GlobalSubjectID, GlobalGroupID);
+                fprintf(logfile, '%.2f\t%.2f\t%s\t%s\t%.2f\t%s\t%d\t%d\t%d\t%s\t%s\t%s\n', ...
+                        stim_time - LoopStart, ISI_time - stim_time, 'target', Stimuli{n}, ...
+                        stim_end - Stim_start, responseKey, TAR, n, b, GlobalRunNumberID, GlobalSubjectID, GlobalGroupID);
 
                 TAR = 0; % reset the Target hunter as 0 (==no target stimulus)
                 responseKey = 'n/a'; % reset the response print to null
@@ -294,4 +299,6 @@ end
 WaitSecs(1); % wait 1 sec before to finish
 
 cd('output_files');
-save(strcat (GlobalSubjectID, '_', GlobalStimuliID, '_Onsetfile_', GlobalRunNumberID, '.mat'), 'Onset', 'Name', 'Duration', 'Resp', 'Onset_target', 'Name_target', 'Duration_target', 'Resp_target', 'IBI_variable');
+save(strcat (GlobalSubjectID, '_', GlobalStimuliID, '_Onsetfile_', GlobalRunNumberID, '.mat'), ...
+     'Onset', 'Name', 'Duration', 'Resp', 'Onset_target', 'Name_target', ...
+     'Duration_target', 'Resp_target', 'IBI_variable');
