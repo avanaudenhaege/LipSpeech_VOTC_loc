@@ -2,3 +2,7 @@
 	path = lib/CPP_BIDS
 	url = https://github.com/cpp-lln-lab/CPP_BIDS.git
 	datalad-url = https://github.com/cpp-lln-lab/CPP_BIDS.git
+[submodule "lib/CPP_PTB"]
+	path = lib/CPP_PTB
+	url = https://github.com/cpp-lln-lab/CPP_PTB.git
+	datalad-url = https://github.com/cpp-lln-lab/CPP_PTB.git
