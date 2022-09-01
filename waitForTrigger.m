@@ -28,7 +28,7 @@ function waitForTrigger(cfg, deviceNumber)
     if strcmpi(cfg.testingDevice, 'mri')
 
         msg = ['Experiment starting in ', ...
-            num2str(cfg.mri.triggerNb - triggerCounter), '...'];
+               num2str(cfg.mri.triggerNb - triggerCounter), '...'];
         talkToMe(cfg, msg);
 
         while triggerCounter < cfg.mri.triggerNb
@@ -39,7 +39,7 @@ function waitForTrigger(cfg, deviceNumber)
 
             if strcmp(KbName(keyCode), cfg.mri.triggerKey)
 
-                triggerCounter = triggerCounter + 1 ;
+                triggerCounter = triggerCounter + 1;
 
                 msg = sprintf(' Trigger %i', triggerCounter);
                 talkToMe(cfg, msg);
@@ -61,7 +61,7 @@ function talkToMe(cfg, msg)
     if isfield(cfg, 'screen') && isfield(cfg.screen, 'win')
 
         DrawFormattedText(cfg.screen.win, msg, ...
-            'center', 'center', cfg.text.color);
+                          'center', 'center', cfg.text.color);
 
         Screen('Flip', cfg.screen.win);
 
