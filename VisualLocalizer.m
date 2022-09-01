@@ -88,7 +88,6 @@ HideCursor(wPtr);
 stimSize = 700;
 stim_duration = 0.748; % + 1-2 ms of delay = 750ms
 ISI_duration = 0.25; % Inter Stimulus Interval
-trial_duration = 1;
 ISI_time = 0; % set to 0 before being reassigned
 
 % STIMULUS RECTANGLE (in the center)
@@ -255,8 +254,8 @@ try  % safety loop: close the screen if code crashes
 
         end % for n stimuli
         block_end = GetSecs();
-        block_duration = block_end - block_start;
-        disp(strcat('Block duration:', num2str(block_duration)));
+        blockDuration = block_end - block_start;
+        disp(strcat('Block duration:', num2str(blockDuration)));
 
         % Draw THE FIX CROSS
         Screen('DrawLines', wPtr, crossLines, crossWidth, crossColor, [screenCenterX, screenCenterY]);
