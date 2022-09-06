@@ -31,7 +31,7 @@ function [cfg] = setParameters()
     %% Task(s)
 
     % Instruction
-    cfg.task.instruction = '\n READY TO START \n \n - Détectez les images répétées - ';
+    cfg.task.instruction = '\n Ready to start \n \n - DETECTEZ LES IMAGES REPETEES - ';
     cfg.task.name = 'VisLoc';
 
     cfg = setMonitor(cfg);
