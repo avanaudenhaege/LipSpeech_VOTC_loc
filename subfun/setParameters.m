@@ -11,15 +11,15 @@ function [cfg] = setParameters()
     %% Debug mode settings
 
     % To test the script out of the scanner, skip PTB sync
-    cfg.debug.do = true;
+    cfg.debug.do = false;
     % To test on a part of the screen, change to true
     cfg.debug.smallWin = false;
     % To test with trasparent full size screen
-    cfg.debug.transpWin = true;
+    cfg.debug.transpWin = false;
 
     cfg.verbose = 1;
 
-    cfg.skipSyncTests = 0;
+    cfg.skipSyncTests = 1;
 
     %% Engine parameters
     cfg.testingDevice = 'mri'; % beh or mri
@@ -31,7 +31,7 @@ function [cfg] = setParameters()
     %% Task(s)
 
     % Instruction
-    cfg.task.instruction = '\n READY TO START \n \n - Détectez les images répétées - ';
+    cfg.task.instruction = '\n Ready to start \n \n - DETECTEZ LES IMAGES REPETEES - ';
     cfg.task.name = 'VisLoc';
 
     cfg = setMonitor(cfg);
@@ -69,7 +69,7 @@ function [cfg] = setParameters()
 
     % Fixation cross (in pixels)
     cfg.fixation.type = 'cross';
-    cfg.fixation.color = cfg.color.black;
+    cfg.fixation.color = cfg.color.white;
     cfg.fixation.width = .25;
     cfg.fixation.lineWidthPix = 3;
     cfg.fixation.xDisplacement = 0;
@@ -117,7 +117,7 @@ function cfg = setMonitor(cfg)
     cfg.color.black = [0 0 0];
     cfg.color.red = [255 0 0];
     cfg.color.grey = mean([cfg.color.black; cfg.color.white]);
-    cfg.color.background = cfg.color.black;
+    cfg.color.background = cfg.color.grey;
     cfg.text.color = cfg.color.white;
 
     % Monitor parameters

@@ -8,7 +8,7 @@ function thisTrial = playTrial(cfg, thisTrial, logFile)
     for iFrame = 1:nbFrames
 
         Screen('DrawTexture', cfg.screen.win, thisTrial.texture, [], cfg.screen.stimulusRect);
-        drawFixation(cfg);
+%         drawFixation(cfg);
         vbl = Screen('Flip', cfg.screen.win, vbl + cfg.screen.ifi / 2);
 
         if iFrame == 1
