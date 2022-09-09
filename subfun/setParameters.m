@@ -85,7 +85,7 @@ end
 
 function cfg = setKeyboards(cfg)
     cfg.keyboard.escapeKey = 'ESCAPE';
-    cfg.keyboard.responseKey = {'s', 'd', 'space'};
+    cfg.keyboard.responseKey = {'a', 'b', 'c', 'd'};
     cfg.keyboard.keyboard = [];
     cfg.keyboard.responseBox = [];
 
