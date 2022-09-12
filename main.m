@@ -184,9 +184,20 @@ try
 
     cleanUp();
 
+    cpp_ptb('uninit');
+    cpp_bids('uninit');
+    pth = fileparts(mfilename('fullpath'));
+    rmpath(fullfile(pth, 'supporting_functions'));    
+
 catch
 
     cleanUp();
+
+    cpp_ptb('uninit');
+    cpp_bids('uninit');
+    pth = fileparts(mfilename('fullpath'));
+    rmpath(fullfile(pth, 'supporting_functions'));
+
     psychrethrow(psychlasterror);
 
 end
