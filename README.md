@@ -6,9 +6,7 @@ Jan 2022
 
 ## RUN DESCRIPTION
 
-Categories of stimuli = 3 (words, houses and faces); 24 exemplars per category.
-
-Tot num stimuli = 72;
+Categories of stimuli = 3 (words, houses and faces); 24 exemplars per category (tot = 72).
 
 There are 30 blocks : 10 for each condition.
 
@@ -63,8 +61,7 @@ the script. Put either 'PC' or 'Scanner'.
 Once you will Run the script you will be asked to select some variables:
 
 1. Group (TO DEFINE): ctrl is defined as default
-2. SubID : first 2 letters of Name + first 2 letters of Surname (e.g. Mickey Mouse
- == MiMo).
+2. SubID 
 3. Run Number : 1st or 2nd run
 4. Stimuli ID: 'setA' or 'setB' (it is important to spell correctly this
    variable because these labels are used to select the correct stimuli folder
