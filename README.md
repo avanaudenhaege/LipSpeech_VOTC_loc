@@ -1,14 +1,14 @@
-# LIPSPEECH EXPERIMENT: VOTC localizer
+# LIPSPEECH EXPERIMENT: localizer
 
-Initial script from Stefania Mattioni - adapted by Alice Van Audenhaege and Remi Gau
+script from Stefania Mattioni - adapted by Alice Van Audenhaege and Remi Gau
 
-October 2022
-
-localization of VWFA, FFA, PPA
+Jan 2022
 
 ## RUN DESCRIPTION
 
-Categories of stimuli = 3 (words, houses and faces); 24 exemplars per category (Total = 72).
+Categories of stimuli = 3 (words, houses and faces); 24 exemplars per category.
+
+Tot num stimuli = 72;
 
 There are 30 blocks : 10 for each condition.
 
@@ -48,6 +48,13 @@ Fixation cross to fill the time difference to get to 488s anyway.
 TWO SET OF STIMULI (order of pres. counterbalanced accross partic.) : Set A Set
 B
 
+## STIMULI
+
+To be used with a folder named `stimuli` containing the following files stored
+on OSF in `VOTC-loc_stimuli.zip`:
+
+https://osf.io/2xtsn/?view_only=22f09bb4dc5f4a11823103141ca2f735
+
 ## ACTION and VARIABLE SETTING
 
 The only variable you need to manually change is Cfg.device at the beginning of
@@ -56,9 +63,10 @@ the script. Put either 'PC' or 'Scanner'.
 Once you will Run the script you will be asked to select some variables:
 
 1. Group (TO DEFINE): ctrl is defined as default
-2. SubID : first 2 letters of Name + first 2 letters of Surname (e.g. Mickey Mouse == MiMo).
+2. SubID : first 2 letters of Name + first 2 letters of Surname (e.g. Mickey Mouse
+ == MiMo).
 3. Run Number : 1st or 2nd run
 4. Stimuli ID: 'setA' or 'setB' (it is important to spell correctly this
    variable because these labels are used to select the correct stimuli folder
    in the script. In case this input is not given or it is mispelled. it will
-   automatically pick the set A.
+   automatically pick the set A.)
