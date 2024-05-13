@@ -4,6 +4,8 @@ Initial script from Stefania Mattioni - adapted by Alice Van Audenhaege and Remi
 
 October 2023
 
+localization of VWFA, FFA, PPA
+
 ## RUN DESCRIPTION
 
 Categories of stimuli = 3 (words, houses and faces); 24 exemplars per category (Total = 72).
