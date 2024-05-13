@@ -1,4 +1,4 @@
-# LIPSPEECH EXPERIMENT: localizer
+# LIPSPEECH EXPERIMENT: VOTC localizer
 
 Initial script from Stefania Mattioni - adapted by Alice Van Audenhaege and Remi Gau
 
