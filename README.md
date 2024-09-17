@@ -1,6 +1,6 @@
-# LIPSPEECH EXPERIMENT: localizer
+# VOTC REGIONS: localizer
 
-script from Stefania Mattioni - adapted by Alice Van Audenhaege and Remi Gau
+script by Alice Van Audenhaege and Remi Gau
 
 Jan 2022
 
